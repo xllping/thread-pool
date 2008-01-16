@@ -12,7 +12,7 @@ import java.util.Hashtable;
  * @author Álvaro
  *
  */
-class Trace {
+public class Trace {
 	
 	private static Hashtable<Integer, OutputStream> standarOutput;
 	private static Hashtable<Integer, OutputStream> errorOutput;

@@ -1,7 +1,11 @@
 package com.google.threadpool;
 
 
-
+/**
+ * Class that implements an IThread for using as example.
+ * @author Álvaro
+ *
+ */
 public class TReenvioRHIN implements IThreadListener {
 
 	long[] tiempos = { 10000, 20000, 30000 };
