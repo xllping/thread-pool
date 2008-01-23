@@ -18,7 +18,7 @@ import com.google.threadpool.Trace;
  * 
  * This class creates and manages all extended threads from
  * SingleThread. 
- * @author avf
+ * @author Álvaro
  *
  */
 public class ThreadManager implements IThreadManagerListener{
@@ -58,6 +58,9 @@ public class ThreadManager implements IThreadManagerListener{
         //At the moment, I put these default values in the parameters
         setTimeOut(TIME_OUT_DEFAULT);
         setMaxThread(MAX_THREAD_DEFAULT);
+        
+        //By default, it does not print on standard output
+        setStandardPrintable(true);
 
     }
 
@@ -85,8 +88,8 @@ public class ThreadManager implements IThreadManagerListener{
         long currentTime = time.getTime() ;
         long idResult = currentTime + (long)(Math.random()*100);
 
-        System.out.println("==>> newThread(IThreadListener)");
-        System.out.println("==>> newThread("+_operacion+")");
+        Trace.print("==>> newThread(IThreadListener)");
+        Trace.print("==>> newThread("+_operacion+")");
 
         //Getting the limit, now objects are queued
         if( executingThreads.size() == getMaxThread() ){
@@ -94,11 +97,11 @@ public class ThreadManager implements IThreadManagerListener{
             threadQueue.add( idResult );
             paralelThreadQueue.put( idResult, _operacion );
 
-            System.out.println("==> newThread(): Thread waiting");
+            Trace.print("==> newThread(): Thread waiting");
 
         } else {
 
-        	System.out.println("==> newThread(): Thread on execution");
+        	Trace.print("==> newThread(): Thread on execution");
 
         	id_Time.put(idResult, currentTime);//Bind the current time to the executing thread
 
@@ -153,7 +156,7 @@ public class ThreadManager implements IThreadManagerListener{
      *
      * @return True, if it stopped correctly
      */
-    protected synchronized boolean stopThread( long id ){
+    public synchronized boolean stopThread( long id ){
     	if( !executingThreads.containsKey(id) ){
     		//Must throw exception
     		Trace.err(" *** Try to stop a Thread#ID: "+id+", but it is unregistered ***");
@@ -274,6 +277,14 @@ public class ThreadManager implements IThreadManagerListener{
     public void clearQueue() {
         threadQueue.remove();
         paralelThreadQueue.clear();
+    }
+    
+    public void setStandardPrintable( boolean standarPrint ) {
+    	Trace.setStandardPrintable(standarPrint);
+    }
+    
+    public boolean getStandarPrintable( ) {
+    	return Trace.getStandardPrintable();
     }
 
 
