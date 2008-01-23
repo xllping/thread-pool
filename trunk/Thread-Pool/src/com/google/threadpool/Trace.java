@@ -17,11 +17,22 @@ public class Trace {
 	private static Hashtable<Integer, OutputStream> standarOutput;
 	private static Hashtable<Integer, OutputStream> errorOutput;
 	
+	private static boolean isStandardPrintable;
+	
 	static {
 		standarOutput = new Hashtable<Integer, OutputStream>();
 		errorOutput = new Hashtable<Integer, OutputStream>();
+		isStandardPrintable = true;
 	}
 
+	
+	protected static void setStandardPrintable(boolean standarPrint) {
+		isStandardPrintable = standarPrint ;
+	}
+	
+	protected static boolean getStandardPrintable() {
+		return isStandardPrintable;
+	}
 	/**
 	 * 
 	 * It prints all specified output error streams.
@@ -29,7 +40,7 @@ public class Trace {
 	 * using System.err object. 
 	 * @param message String containing the message to print.
 	 */
-	public static void err(String message) {
+	protected static void err(String message) {
 		Collection<OutputStream> collectionOut = errorOutput.values();
 		byte[] stream = message.getBytes();
 		
@@ -42,7 +53,7 @@ public class Trace {
 			}
 		}
 		
-		if(collectionOut.size()==0) {
+		if(collectionOut.size()==0 && isStandardPrintable) {
 			System.err.println(message);
 		}
 	}
@@ -65,7 +76,7 @@ public class Trace {
 			}
 		}
 		
-		if(collectionOut.size()==0) {
+		if(collectionOut.size()==0 && isStandardPrintable) {
 			System.out.println(message);
 		}
 	}
@@ -73,7 +84,7 @@ public class Trace {
 	 * It adds a new output stream for printing messages.
 	 * @param out Output stream
 	 */
-	public static void addSalidaStandar(OutputStream out) {
+	protected static void addSalidaStandar(OutputStream out) {
 				
 		if(!standarOutput.containsKey(out.hashCode())) {
 			standarOutput.put(out.hashCode(), out);
@@ -83,7 +94,7 @@ public class Trace {
 	 * It adds a new output error stream for printing messages.
 	 * @param out Output error stream.
 	 */
-	public static void addSalidaError(OutputStream out) {
+	protected static void addSalidaError(OutputStream out) {
 		if( !errorOutput.containsKey(out.hashCode()) ){
 			errorOutput.put(out.hashCode(), out);
 		}
@@ -92,20 +103,20 @@ public class Trace {
 	 * It removes the output stream from the list.
 	 * @param out Stream to be deleted.
 	 */
-	public static void removeSalidaStandar( OutputStream out ) {
+	protected static void removeSalidaStandar( OutputStream out ) {
 		standarOutput.remove(out.hashCode());
 	}
 	/**
 	 * It removes the output error stream from the list.
 	 * @param out Stream to be deleted.
 	 */
-	public static void removeSalidaError( OutputStream out ) {
+	protected static void removeSalidaError( OutputStream out ) {
 		errorOutput.remove(out.hashCode());
 	}
 	/**
 	 * It removes all output streams.
 	 */
-	public static void removeAllSalidaStandar() {
+	protected static void removeAllSalidaStandar() {
 		Collection<OutputStream> collectionSalida = standarOutput.values();
 		
 		for(OutputStream out : collectionSalida){
@@ -115,7 +126,7 @@ public class Trace {
 	/**
 	 * It removes all output error streams.
 	 */
-	public static void removeAllSalidaError() {
+	protected static void removeAllSalidaError() {
 		Collection<OutputStream> collectionSalida = errorOutput.values();
 		
 		for(OutputStream out : collectionSalida){
