@@ -1,0 +1,2 @@
+The main idea is to develop a pool of threads, limiting the number of threads running at the time.
+It can also be added new functions, such as a queue for future executions in threads, yielding threads according to a level assigned in code, annotations or in a xml file.
